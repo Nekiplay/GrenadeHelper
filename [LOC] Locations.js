@@ -393,7 +393,7 @@ var locations = [
     ["de_mirage", [-1020.6661376953125, -341.7388916015625, -301.097900390625], [-22.474211502075195, -102.71636199951172, 0], "molotov", "Up ladder", "Run+Jump+Throw", 0],
     ["de_mirage", [-1020.6661376953125, -341.7388916015625, -301.097900390625], [-22.474211502075195, -103.01636199951172, 0], "high explosive grenade", "Up ladder", "Run+Jump+Throw", 0],
     ["de_mirage", [-1177.55, 216.40, -106.44], [-12.65, 150.63, 0], "molotov", "Car", "Run+Throw", 12], /* Fixed by Neki_play */
-    ["de_mirage", [-1177.55, 216.40, -106.44], [-12.65, 150.63, 0], "high explosive grenade", "Car", "Run+Throw", ],],  /* Fixed by Neki_play */
+    ["de_mirage", [-1177.55, 216.40, -106.44], [-12.65, 150.63, 0], "high explosive grenade", "Car", "Run+Throw", 12,],  /* Fixed by Neki_play */
     ["de_mirage", [-38.82, -1554.13, -103.97], [-37.32, 164.18, 0], "molotov", "Stairs", "Throw", 8],
     ["de_mirage", [-38.82, -1554.13, -103.97], [-37.32, 164.18, 0], "high explosive grenade", "Stairs", "Throw", 8],
 	["de_mirage", [-30.73310661315918,771.1280517578125,-71.96875], [-25.506772994995117,-172.29470825195313,0], "molotov", "One-way", "Throw", 1],
