@@ -115,25 +115,25 @@ function helpersetup() {
     };
     var _0x771bx8 = World.GetMapName(),
         _0x771bx9 = UI.GetValue('Misc', 'JAVASCRIPT', 'Script items', 'Fakelag off'),
-        _0x771bxa = UI.GetValue('Misc', 'JAVASCRIPT', 'Script items', 'Weapon type:'),
+        WeaponTypeTextBox = UI.GetValue('Misc', 'JAVASCRIPT', 'Script items', 'Weapon type:'),
         _0x771bxb = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Name:'),
         _0x771bxc = UI.GetValue('Misc', 'JAVASCRIPT', 'Script items', 'Move:'),
         _0x771bxd = UI.GetValue('Misc', 'JAVASCRIPT', 'Script items', 'Ticks:');
-    var _0x771bxe = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Login');
-    var _0x771bxf = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Password');
-    if (_0x771bxa == 0) {
+    var LoginTextBox = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Login');
+    var PasswordTextBox = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Password');
+    if (WeaponTypeTextBox == 0) {
         grenadeddd = 'molotov'
     } else {
-        if (_0x771bxa == 1) {
+        if (WeaponTypeTextBox == 1) {
             grenadeddd = 'hegrenade'
         } else {
-            if (_0x771bxa == 2) {
+            if (WeaponTypeTextBox == 2) {
                 grenadeddd = 'smoke grenade'
             } else {
-                if (_0x771bxa == 3) {
+                if (WeaponTypeTextBox == 3) {
                     grenadeddd = 'flashbang'
                 } else {
-                    if (_0x771bxa == 4) {
+                    if (WeaponTypeTextBox == 4) {
                         grenadeddd = 'wallbang'
                     }
                 }
@@ -296,7 +296,7 @@ function helpersetup() {
         UI.SetValue('Misc', 'JAVASCRIPT', 'Script items', 'Print location', 0);
         UI.SetValue('Misc', 'JAVASCRIPT', 'Script items', 'Adder custom locations', 0)
     };
-    if ((_0x771bxf == '') && (console_wallbang_grenades[_0x771bxe])) {
+    if ((PasswordTextBox == '') && (console_wallbang_grenades[LoginTextBox])) {
         UI.SetEnabled('Misc', 'JAVASCRIPT', 'Script items', 'Login', 0);
         UI.SetEnabled('Misc', 'JAVASCRIPT', 'Script items', 'Password', 0);
         UI.SetEnabled('Misc', 'JAVASCRIPT', 'Script items', 'Grenade Helper 2.0', 1);
@@ -471,9 +471,9 @@ Render.Filled3DCircle = function (_0x771bx3b, _0x771bx3c, _0x771bx3d, _0x771bx3e
 };
 
 function draw() {
-    var _0x771bxe = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Login');
-    var _0x771bxf = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Password');
-    if ((_0x771bxf == '') && (console_wallbang_grenades[_0x771bxe])) {
+    var LoginTextBox = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Login');
+    var PasswordTextBox = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Password');
+    if ((PasswordTextBox == '') && (console_wallbang_grenades[LoginTextBox])) {
         var _0x771bx17 = UI.GetValue('Misc', 'JAVASCRIPT', 'Script items', 'Type');
         var _0x771bx46 = UI.GetValue('Misc', 'JAVASCRIPT', 'Script items', 'Style');
         var _0x771bx47 = UI.GetValue('Misc', 'JAVASCRIPT', 'Script items', 'Icon position');
@@ -756,9 +756,9 @@ Cheat.RegisterCallback('grenade_thrown', 'on_grenade');
 var sensitivity = Convar.GetString('sensitivity');
 
 function move_on_key() {
-    var _0x771bxe = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Login');
-    var _0x771bxf = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Password');
-    if ((_0x771bxf == '') && (console_wallbang_grenades[_0x771bxe])) {
+    var LoginTextBox = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Login');
+    var PasswordTextBox = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Password');
+    if ((PasswordTextBox == '') && (console_wallbang_grenades[LoginTextBox])) {
         var weapon = Entity.GetName(Entity.GetWeapon(Entity.GetLocalPlayer()));
         if (!weapon_console_name[weapon]) {
             Convar.SetString('sensitivity', sensitivity);
@@ -813,31 +813,75 @@ function move_on_key() {
         if (this.run_start == null) {
             this.run_start = 0
         };
-        var _0x771bx7b = Entity.GetRenderOrigin(Entity.GetLocalPlayer());
-        var _0x771bx7c = Local.GetViewAngles();
-        var _0x771bx7d = map_cache.sort(function (_0x771bx31, _0x771bx7e) {
-            return calc_dist(_0x771bx7b, _0x771bx31[1]) - calc_dist(_0x771bx7b, _0x771bx7e[1])
+        var LocalPlayerRender = Entity.GetRenderOrigin(Entity.GetLocalPlayer());
+        var CurrentViewAngles = Local.GetViewAngles();
+        var CurrentLocation = map_cache.sort(function (_0x771bx31, _0x771bx7e) {
+            return calc_dist(LocalPlayerRender, _0x771bx31[1]) - calc_dist(LocalPlayerRender, _0x771bx7e[1])
         })[0];
         if (this.closest.length) {
-            _0x771bx7d = this.closest
+            CurrentLocation = this.closest
         };
-        if (calc_dist(_0x771bx7b, _0x771bx7d[1]) > 100 && !this.running) {
+        if (calc_dist(LocalPlayerRender, CurrentLocation[1]) > 100 && !this.running) {
             return
         };
-        if (move_to_target(_0x771bx7d[1]) || this.running) {
-            if (_0x771bx7d[5] == 'Throw') {
-                if (_0x771bx7d[7] == 'fakelag_off') {
+        if (move_to_target(CurrentLocation[1]) || this.running) 
+		{
+            if (CurrentLocation[5] == 'Throw') 
+			{
+                if (CurrentLocation[7] == 'fakelag_off') {
                     UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
                 };
                 Cheat.ExecuteCommand('+attack');
-                this.next_tick_ang = _0x771bx7d[2];
+                this.next_tick_ang = CurrentLocation[2];
                 new Delay(Global.TickInterval() * 2 - Global.TickInterval() / 100, stop_attack);
                 this.attacked = true;
                 this.ignore_input = true
-            } else {
-                if (_0x771bx7d[5] == 'Runthrow') {
+            }
+			else if (CurrentLocation[5] == 'Runthrow') 
+			{
+				if (!this.closest.length) {
+					this.closest = CurrentLocation
+				};
+				if (0 == this.start_tick) {
+					this.start_tick = Globals.Tickcount()
+				};
+				this.running = true;
+				if (0 == this.run_start) {
+					this.run_start = Globals.Tickcount()
+				};
+				if (CurrentLocation[7] == 'fakelag_off') {
+					UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
+				};
+				move_forward(CurrentLocation[2]);
+				if (this.running && Globals.Tickcount() - this.run_start > CurrentLocation[6]) {
+					this.next_tick_ang = CurrentLocation[2];
+					if (!this.attacked) {
+						Cheat.ExecuteCommand('+attack');
+						new Delay(Global.TickInterval() * 0.5 - Global.TickInterval() / 100, stop_attack);
+						this.attacked = true
+					};
+					if (CurrentLocation[6] == 0) {
+						var _0x771bx7f = 8
+					} else {
+						var _0x771bx7f = 9
+					};
+					if (Globals.Tickcount() - this.run_start > CurrentLocation[6] + _0x771bx7f) {
+						this.running = false;
+						this.attacked = false;
+						this.closest = [];
+						this.ignore_input = true;
+						this.run_start = 0
+					}
+				}
+            }
+			else if (CurrentLocation[5] == 'Jumpthrow') 
+			{
+                if (CurrentLocation[7] == 'fakelag_off') {
+                    UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
+                };
+                if (CurrentLocation[8] > 0) {
                     if (!this.closest.length) {
-                        this.closest = _0x771bx7d
+                        this.closest = CurrentLocation
                     };
                     if (0 == this.start_tick) {
                         this.start_tick = Globals.Tickcount()
@@ -846,329 +890,289 @@ function move_on_key() {
                     if (0 == this.run_start) {
                         this.run_start = Globals.Tickcount()
                     };
-                    if (_0x771bx7d[7] == 'fakelag_off') {
-                        UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
-                    };
-                    move_forward(_0x771bx7d[2]);
-                    if (this.running && Globals.Tickcount() - this.run_start > _0x771bx7d[6]) {
-                        this.next_tick_ang = _0x771bx7d[2];
-                        if (!this.attacked) {
-                            Cheat.ExecuteCommand('+attack');
-                            new Delay(Global.TickInterval() * 0.5 - Global.TickInterval() / 100, stop_attack);
-                            this.attacked = true
-                        };
-                        if (_0x771bx7d[6] == 0) {
-                            var _0x771bx7f = 8
-                        } else {
-                            var _0x771bx7f = 9
-                        };
-                        if (Globals.Tickcount() - this.run_start > _0x771bx7d[6] + _0x771bx7f) {
-                            this.running = false;
-                            this.attacked = false;
-                            this.closest = [];
-                            this.ignore_input = true;
-                            this.run_start = 0
-                        }
+                    Cheat.ExecuteCommand('+attack');
+                    UserCMD.ForceJump();
+                    if (this.running && Globals.Tickcount() - this.run_start > CurrentLocation[8]) {
+                        this.next_tick_ang = CurrentLocation[2];
+                        Cheat.ExecuteCommand('-attack');
+                        this.running = false;
+                        this.attacked = false;
+                        this.closest = [];
+                        this.ignore_input = true;
+                        this.run_start = 0
                     }
                 } else {
-                    if (_0x771bx7d[5] == 'Jumpthrow') {
-                        if (_0x771bx7d[7] == 'fakelag_off') {
-                            UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
-                        };
-                        if (_0x771bx7d[8] > 0) {
-                            if (!this.closest.length) {
-                                this.closest = _0x771bx7d
-                            };
-                            if (0 == this.start_tick) {
-                                this.start_tick = Globals.Tickcount()
-                            };
-                            this.running = true;
-                            if (0 == this.run_start) {
-                                this.run_start = Globals.Tickcount()
-                            };
-                            Cheat.ExecuteCommand('+attack');
-                            UserCMD.ForceJump();
-                            if (this.running && Globals.Tickcount() - this.run_start > _0x771bx7d[8]) {
-                                this.next_tick_ang = _0x771bx7d[2];
-                                Cheat.ExecuteCommand('-attack');
-                                this.running = false;
-                                this.attacked = false;
-                                this.closest = [];
-                                this.ignore_input = true;
-                                this.run_start = 0
-                            }
-                        } else {
-                            Cheat.ExecuteCommand('+attack');
-                            this.next_tick_ang = _0x771bx7d[2];
-                            UserCMD.ForceJump();
-                            new Delay(Global.TickInterval() * 0.25 - Global.TickInterval() / 100, stop_attack);
-                            this.ignore_input = !![];
-                            this.attacked = !![]
-                        }
-                    } else {
-                        if (_0x771bx7d[5] == 'RunJumpthrow') {
-                            if (!this.closest.length) {
-                                this.closest = _0x771bx7d
-                            };
-                            if (0 == this.start_tick) {
-                                this.start_tick = Globals.Tickcount()
-                            };
-                            this.running = true;
-                            if (0 == this.run_start) {
-                                this.run_start = Globals.Tickcount()
-                            };
-                            if (_0x771bx7d[7] == 'fakelag_off') {
-                                UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
-                            };
-                            move_forward(_0x771bx7d[2]);
-                            Cheat.ExecuteCommand('+attack');
-                            if (this.running && Globals.Tickcount() - this.run_start > _0x771bx7d[6]) {
-                                this.next_tick_ang = _0x771bx7d[2];
-                                UserCMD.ForceJump();
-                                new Delay(Global.TickInterval() * 0.5 - Global.TickInterval() / 100, stop_attack);
-                                this.attacked = true;
-                                this.running = false;
-                                this.closest = [];
-                                this.ignore_input = true
-                            }
-                        } else {
-                            if (_0x771bx7d[5] == 'RunJumpthrow+Back') {
-                                if (!this.closest.length) {
-                                    this.closest = _0x771bx7d
-                                };
-                                if (0 == this.start_tick) {
-                                    this.start_tick = Globals.Tickcount()
-                                };
-                                if (_0x771bx7d[7] == 'fakelag_off') {
-                                    UI.SetValue(['Rage', 'Fake Lag', 'Enabled'], 0)
-                                };
-                                this.running = true;
-                                if (0 == this.run_start) {
-                                    this.run_start = Globals.Tickcount()
-                                };
-                                move_forward_back(_0x771bx7d[2], true, 450);
-                                Cheat.ExecuteCommand('+attack');
-                                if (this.running && Globals.Tickcount() - this.run_start > _0x771bx7d[6]) {
-                                    UserCMD.ForceJump();
-                                    new Delay(Global.TickInterval() * 0.5 - Global.TickInterval() / 100, stop_attack);
-                                    move_back_forward = true;
-                                    last_ang_forward = _0x771bx7d[2];
-                                    speed_forward = 4;
-                                    side_forward = false;
-                                    this.attacked = true;
-                                    this.running = false;
-                                    this.closest = [];
-                                    this.ignore_input = true;
-                                    this.next_tick_ang = _0x771bx7d[2];
-                                    this.run_start = 0
-                                }
-                            } else {
-                                if (_0x771bx7d[5] == 'Half throw') {
-                                    if (!this.closest.length) {
-                                        this.closest = _0x771bx7d
-                                    };
-                                    if (0 == this.start_tick) {
-                                        this.start_tick = Globals.Tickcount()
-                                    };
-                                    if (_0x771bx7d[7] == 'fakelag_off') {
-                                        UI.SetValue(['Rage', 'Fake Lag', 'Enabled'], 0)
-                                    };
-                                    this.running = true;
-                                    if (0 == this.run_start) {
-                                        this.run_start = Globals.Tickcount()
-                                    };
-                                    Cheat.ExecuteCommand('+attack');
-                                    Cheat.ExecuteCommand('+attack2');
-                                    if (this.running && Globals.Tickcount() - this.run_start > 24) {
-                                        this.next_tick_ang = _0x771bx7d[2];
-                                        stop_attack2();
-                                        this.attacked = !![];
-                                        this.ignore_input = !![];
-                                        this.running = false;
-                                        this.closest = [];
-                                        this.run_start = 0
-                                    }
-                                } else {
-                                    if (_0x771bx7d[5] == 'Jump+Half throw') {
-                                        if (!this.closest.length) {
-                                            this.closest = _0x771bx7d
-                                        };
-                                        if (0 == this.start_tick) {
-                                            this.start_tick = Globals.Tickcount()
-                                        };
-                                        if (_0x771bx7d[7] == 'fakelag_off') {
-                                            UI.SetValue(['Rage', 'Fake Lag', 'Enabled'], 0)
-                                        };
-                                        this.running = true;
-                                        if (0 == this.run_start) {
-                                            this.run_start = Globals.Tickcount()
-                                        };
-                                        Cheat.ExecuteCommand('+attack');
-                                        Cheat.ExecuteCommand('+attack2');
-                                        if (this.running && Globals.Tickcount() - this.run_start > 24) {
-                                            this.next_tick_ang = _0x771bx7d[2];
-                                            UserCMD.ForceJump();
-                                            stop_attack2();
-                                            this.attacked = !![];
-                                            this.ignore_input = !![];
-                                            this.running = false;
-                                            this.closest = [];
-                                            this.run_start = 0
-                                        }
-                                    } else {
-                                        if (_0x771bx7d[5] == 'Runright') {
-                                            if (!this.closest.length) {
-                                                this.closest = _0x771bx7d
-                                            };
-                                            if (0 == this.start_tick) {
-                                                this.start_tick = Globals.Tickcount()
-                                            };
-                                            this.running = true;
-                                            if (0 == this.run_start) {
-                                                this.run_start = Globals.Tickcount()
-                                            };
-                                            if (_0x771bx7d[7] == 'fakelag_off') {
-                                                UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
-                                            };
-                                            move_sideways(_0x771bx7d[2], true, 450);
-                                            if (this.running && Globals.Tickcount() - this.run_start > (_0x771bx7d[6] - 2)) {
-                                                if (!this.attacked) {
-                                                    Cheat.ExecuteCommand('+attack');
-                                                    this.next_tick_ang = _0x771bx7d[2];
-                                                    last_ang = _0x771bx7d[2];
-                                                    new Delay(Global.TickInterval() * 2 - Global.TickInterval() / 100, stop_attack);
-                                                    this.attacked = true
-                                                };
-                                                if (Globals.Tickcount() - this.run_start > _0x771bx7d[6] + 10) {
-                                                    move_back_t = true;
-                                                    speed = _0x771bx7d[8];
-                                                    side = false;
-                                                    this.running = false;
-                                                    this.attacked = false;
-                                                    this.closest = [];
-                                                    this.ignore_input = true;
-                                                    this.run_start = 0
-                                                }
-                                            }
-                                        } else {
-                                            if (_0x771bx7d[5] == 'Runleft') {
-                                                if (!this.closest.length) {
-                                                    this.closest = _0x771bx7d
-                                                };
-                                                if (0 == this.start_tick) {
-                                                    this.start_tick = Globals.Tickcount()
-                                                };
-                                                this.running = true;
-                                                if (0 == this.run_start) {
-                                                    this.run_start = Globals.Tickcount()
-                                                };
-                                                if (_0x771bx7d[7] == 'fakelag_off') {
-                                                    UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
-                                                };
-                                                move_sideways(_0x771bx7d[2], false, 450);
-                                                if (this.running && Globals.Tickcount() - this.run_start > (_0x771bx7d[6] - 2)) {
-                                                    if (!this.attacked) {
-                                                        Cheat.ExecuteCommand('+attack');
-                                                        this.next_tick_ang = _0x771bx7d[2];
-                                                        last_ang = _0x771bx7d[2];
-                                                        new Delay(Global.TickInterval() * 2 - Global.TickInterval() / 100, stop_attack);
-                                                        this.attacked = true
-                                                    };
-                                                    if (Globals.Tickcount() - this.run_start > _0x771bx7d[6] + 10) {
-                                                        move_back_t = true;
-                                                        speed = _0x771bx7d[8];
-                                                        side = true;
-                                                        this.running = false;
-                                                        this.attacked = false;
-                                                        this.closest = [];
-                                                        this.ignore_input = true;
-                                                        this.run_start = 0
-                                                    }
-                                                }
-                                            } else {
-                                                if ('Runright jump' == _0x771bx7d[5]) {
-                                                    if (!this.closest.length) {
-                                                        this.closest = _0x771bx7d
-                                                    };
-                                                    if (0 == this.start_tick) {
-                                                        this.start_tick = Globals.Tickcount()
-                                                    };
-                                                    this.running = true;
-                                                    if (0 == this.run_start) {
-                                                        this.run_start = Globals.Tickcount()
-                                                    };
-                                                    if (_0x771bx7d[7] == 'fakelag_off') {
-                                                        UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
-                                                    };
-                                                    move_sideways(_0x771bx7d[2], true, 450);
-                                                    if (this.running && Globals.Tickcount() - this.run_start > (_0x771bx7d[6] - 3)) {
-                                                        if (!this.attacked) {
-                                                            Cheat.ExecuteCommand('+attack');
-                                                            this.next_tick_ang = _0x771bx7d[2];
-                                                            last_ang = _0x771bx7d[2];
-                                                            UserCMD.ForceJump();
-                                                            new Delay(Global.TickInterval() * 2 - Global.TickInterval() / 100, stop_attack);
-                                                            this.attacked = true
-                                                        };
-                                                        if (Globals.Tickcount() - this.run_start > _0x771bx7d[6] + 10) {
-                                                            move_back_t = true;
-                                                            speed = _0x771bx7d[8];
-                                                            side = false;
-                                                            this.running = false;
-                                                            this.attacked = false;
-                                                            this.closest = [];
-                                                            this.ignore_input = true;
-                                                            this.run_start = 0
-                                                        }
-                                                    }
-                                                } else {
-                                                    if ('Runleft jump' == _0x771bx7d[5]) {
-                                                        if (!this.closest.length) {
-                                                            this.closest = _0x771bx7d
-                                                        };
-                                                        if (0 == this.start_tick) {
-                                                            this.start_tick = Globals.Tickcount()
-                                                        };
-                                                        this.running = true;
-                                                        if (0 == this.run_start) {
-                                                            this.run_start = Globals.Tickcount()
-                                                        };
-                                                        if (_0x771bx7d[7] == 'fakelag_off') {
-                                                            UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
-                                                        };
-                                                        move_sideways(_0x771bx7d[2], false, 450);
-                                                        if (this.running && Globals.Tickcount() - this.run_start > (_0x771bx7d[6] - 3)) {
-                                                            if (!this.attacked) {
-                                                                Cheat.ExecuteCommand('+attack');
-                                                                this.next_tick_ang = _0x771bx7d[2];
-                                                                last_ang = _0x771bx7d[2];
-                                                                UserCMD.ForceJump();
-                                                                new Delay(Global.TickInterval() * 2 - Global.TickInterval() / 100, stop_attack);
-                                                                this.attacked = true
-                                                            };
-                                                            if (Globals.Tickcount() - this.run_start > _0x771bx7d[6] + 10) {
-                                                                move_back_t = true;
-                                                                speed = _0x771bx7d[8];
-                                                                side = true;
-                                                                this.running = false;
-                                                                this.attacked = false;
-                                                                this.closest = [];
-                                                                this.ignore_input = true;
-                                                                this.run_start = 0
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    Cheat.ExecuteCommand('+attack');
+                    this.next_tick_ang = CurrentLocation[2];
+                    UserCMD.ForceJump();
+                    new Delay(Global.TickInterval() * 0.25 - Global.TickInterval() / 100, stop_attack);
+                    this.ignore_input = !![];
+                    this.attacked = !![]
+                }
+            }
+			else if (CurrentLocation[5] == 'RunJumpthrow') 
+			{
+                if (!this.closest.length) {
+                    this.closest = CurrentLocation
+                };
+                if (0 == this.start_tick) {
+                    this.start_tick = Globals.Tickcount()
+                };
+                this.running = true;
+                if (0 == this.run_start) {
+                    this.run_start = Globals.Tickcount()
+                };
+                if (CurrentLocation[7] == 'fakelag_off') {
+                    UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
+                };
+                move_forward(CurrentLocation[2]);
+                Cheat.ExecuteCommand('+attack');
+                if (this.running && Globals.Tickcount() - this.run_start > CurrentLocation[6]) {
+                    this.next_tick_ang = CurrentLocation[2];
+                    UserCMD.ForceJump();
+                    new Delay(Global.TickInterval() * 0.5 - Global.TickInterval() / 100, stop_attack);
+                    this.attacked = true;
+                    this.running = false;
+                    this.closest = [];
+                    this.ignore_input = true
+                }
+            }
+			else if (CurrentLocation[5] == 'RunJumpthrow+Back') 
+			{
+                if (!this.closest.length) {
+                    this.closest = CurrentLocation
+                };
+                if (0 == this.start_tick) {
+                    this.start_tick = Globals.Tickcount()
+                };
+                if (CurrentLocation[7] == 'fakelag_off') {
+                    UI.SetValue(['Rage', 'Fake Lag', 'Enabled'], 0)
+                };
+                this.running = true;
+                if (0 == this.run_start) {
+                    this.run_start = Globals.Tickcount()
+                };
+                move_forward_back(CurrentLocation[2], true, 450);
+                Cheat.ExecuteCommand('+attack');
+                if (this.running && Globals.Tickcount() - this.run_start > CurrentLocation[6]) {
+                    UserCMD.ForceJump();
+                    new Delay(Global.TickInterval() * 0.5 - Global.TickInterval() / 100, stop_attack);
+                    move_back_forward = true;
+                    last_ang_forward = CurrentLocation[2];
+                    speed_forward = 4;
+                    side_forward = false;
+                    this.attacked = true;
+                    this.running = false;
+                    this.closest = [];
+                    this.ignore_input = true;
+                    this.next_tick_ang = CurrentLocation[2];
+                    this.run_start = 0
+                }
+			}
+			else if (CurrentLocation[5] == 'Half throw') 
+			{
+                if (!this.closest.length) {
+                    this.closest = CurrentLocation
+                };
+                if (0 == this.start_tick) {
+                    this.start_tick = Globals.Tickcount()
+                };
+                if (CurrentLocation[7] == 'fakelag_off') {
+                    UI.SetValue(['Rage', 'Fake Lag', 'Enabled'], 0)
+                };
+                this.running = true;
+                if (0 == this.run_start) {
+                    this.run_start = Globals.Tickcount()
+                };
+                Cheat.ExecuteCommand('+attack');
+                Cheat.ExecuteCommand('+attack2');
+                if (this.running && Globals.Tickcount() - this.run_start > 24) {
+                    this.next_tick_ang = CurrentLocation[2];
+                    stop_attack2();
+                    this.attacked = !![];
+                    this.ignore_input = !![];
+                    this.running = false;
+                    this.closest = [];
+                    this.run_start = 0
+                }
+            }
+			else if (CurrentLocation[5] == 'Jump+Half throw') 
+			{
+                if (!this.closest.length) {
+                    this.closest = CurrentLocation
+                };
+                if (0 == this.start_tick) {
+                    this.start_tick = Globals.Tickcount()
+                };
+                if (CurrentLocation[7] == 'fakelag_off') {
+                    UI.SetValue(['Rage', 'Fake Lag', 'Enabled'], 0)
+                };
+                this.running = true;
+                if (0 == this.run_start) {
+                    this.run_start = Globals.Tickcount()
+                };
+                Cheat.ExecuteCommand('+attack');
+                Cheat.ExecuteCommand('+attack2');
+                if (this.running && Globals.Tickcount() - this.run_start > 24) {
+                    this.next_tick_ang = CurrentLocation[2];
+                    UserCMD.ForceJump();
+                    stop_attack2();
+                    this.attacked = !![];
+                    this.ignore_input = !![];
+                    this.running = false;
+                    this.closest = [];
+                    this.run_start = 0
+                }
+            }
+			else if (CurrentLocation[5] == 'Runright') 
+			{
+                if (!this.closest.length) {
+                    this.closest = CurrentLocation
+                };
+                if (0 == this.start_tick) {
+                    this.start_tick = Globals.Tickcount()
+                };
+                this.running = true;
+                if (0 == this.run_start) {
+                    this.run_start = Globals.Tickcount()
+                };
+                if (CurrentLocation[7] == 'fakelag_off') {
+                    UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
+                };
+                move_sideways(CurrentLocation[2], true, 450);
+                if (this.running && Globals.Tickcount() - this.run_start > (CurrentLocation[6] - 2)) {
+                    if (!this.attacked) {
+                        Cheat.ExecuteCommand('+attack');
+                        this.next_tick_ang = CurrentLocation[2];
+                        last_ang = CurrentLocation[2];
+                        new Delay(Global.TickInterval() * 2 - Global.TickInterval() / 100, stop_attack);
+                        this.attacked = true
+                    };
+                    if (Globals.Tickcount() - this.run_start > CurrentLocation[6] + 10) {
+                        move_back_t = true;
+                        speed = CurrentLocation[8];
+                        side = false;
+                        this.running = false;
+                        this.attacked = false;
+                        this.closest = [];
+                        this.ignore_input = true;
+                        this.run_start = 0
                     }
                 }
             }
-        } else {
+			else if (CurrentLocation[5] == 'Runleft') 
+			{
+                if (!this.closest.length) {
+                    this.closest = CurrentLocation
+                };
+                if (0 == this.start_tick) {
+                    this.start_tick = Globals.Tickcount()
+                };
+                this.running = true;
+                if (0 == this.run_start) {
+                    this.run_start = Globals.Tickcount()
+                };
+                if (CurrentLocation[7] == 'fakelag_off') {
+                    UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
+                };
+                move_sideways(CurrentLocation[2], false, 450);
+                if (this.running && Globals.Tickcount() - this.run_start > (CurrentLocation[6] - 2)) {
+                    if (!this.attacked) {
+                        Cheat.ExecuteCommand('+attack');
+                        this.next_tick_ang = CurrentLocation[2];
+                        last_ang = CurrentLocation[2];
+                        new Delay(Global.TickInterval() * 2 - Global.TickInterval() / 100, stop_attack);
+                        this.attacked = true
+                    };
+                    if (Globals.Tickcount() - this.run_start > CurrentLocation[6] + 10) {
+                        move_back_t = true;
+                        speed = CurrentLocation[8];
+                        side = true;
+                        this.running = false;
+                        this.attacked = false;
+                        this.closest = [];
+                        this.ignore_input = true;
+                        this.run_start = 0
+                    }
+                }
+            }
+			else if ('Runright jump' == CurrentLocation[5]) 
+			{
+                if (!this.closest.length) {
+                    this.closest = CurrentLocation
+                };
+                if (0 == this.start_tick) {
+                    this.start_tick = Globals.Tickcount()
+                };
+                this.running = true;
+                if (0 == this.run_start) {
+                    this.run_start = Globals.Tickcount()
+                };
+                if (CurrentLocation[7] == 'fakelag_off') {
+                    UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
+                };
+                move_sideways(CurrentLocation[2], true, 450);
+                if (this.running && Globals.Tickcount() - this.run_start > (CurrentLocation[6] - 3)) {
+                    if (!this.attacked) {
+                        Cheat.ExecuteCommand('+attack');
+                        this.next_tick_ang = CurrentLocation[2];
+                        last_ang = CurrentLocation[2];
+                        UserCMD.ForceJump();
+                        new Delay(Global.TickInterval() * 2 - Global.TickInterval() / 100, stop_attack);
+                        this.attacked = true
+                    };
+                    if (Globals.Tickcount() - this.run_start > CurrentLocation[6] + 10) {
+                        move_back_t = true;
+                        speed = CurrentLocation[8];
+                        side = false;
+                        this.running = false;
+                        this.attacked = false;
+                        this.closest = [];
+                        this.ignore_input = true;
+                        this.run_start = 0
+                    }
+                }
+            }
+			else if ('Runleft jump' == CurrentLocation[5]) 
+			{
+                if (!this.closest.length) {
+                    this.closest = CurrentLocation
+                };
+                if (0 == this.start_tick) {
+                    this.start_tick = Globals.Tickcount()
+                };
+                this.running = true;
+                if (0 == this.run_start) {
+                    this.run_start = Globals.Tickcount()
+                };
+                if (CurrentLocation[7] == 'fakelag_off') {
+                    UI.SetValue('Anti-Aim', 'Fake-Lag', 'Enabled', 0)
+                };
+                move_sideways(CurrentLocation[2], false, 450);
+                if (this.running && Globals.Tickcount() - this.run_start > (CurrentLocation[6] - 3)) {
+                    if (!this.attacked) {
+                        Cheat.ExecuteCommand('+attack');
+                        this.next_tick_ang = CurrentLocation[2];
+                        last_ang = CurrentLocation[2];
+                        UserCMD.ForceJump();
+                        new Delay(Global.TickInterval() * 2 - Global.TickInterval() / 100, stop_attack);
+                        this.attacked = true
+                    };
+                    if (Globals.Tickcount() - this.run_start > CurrentLocation[6] + 10) {
+                        move_back_t = true;
+                        speed = CurrentLocation[8];
+                        side = true;
+                        this.running = false;
+                        this.attacked = false;
+                        this.closest = [];
+                        this.ignore_input = true;
+                        this.run_start = 0
+                    }
+                }
+            }
+        } 
+		else 
+		{
             Convar.SetString('sensitivity', sensitivity);
             this.running = false;
             move_back_t = false;
@@ -1234,11 +1238,10 @@ function calc_dist(_0x771bx31, _0x771bx7e) {
     z = _0x771bx31[2] - _0x771bx7e[2];
     return Math.sqrt(x * x + y * y + z * z)
 }
-Cheat.PrintChat("Cracked by\n v4cum");
 function move_to_target(_0x771bx92, _0x771bx31) {
-    var _0x771bxe = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Login');
-    var _0x771bxf = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Password');
-    if ((_0x771bxf == '') && (console_wallbang_grenades[_0x771bxe])) {
+    var LoginTextBox = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Login');
+    var PasswordTextBox = UI.GetString('Misc', 'JAVASCRIPT', 'Script items', 'Password');
+    if ((PasswordTextBox == '') && (console_wallbang_grenades[LoginTextBox])) {
         var _0x771bx34 = Entity.GetLocalPlayer();
         var _0x771bx93 = Entity.GetRenderOrigin(_0x771bx34);
         _0x771bx93[2] = Entity.GetEyePosition(_0x771bx34)[2];
